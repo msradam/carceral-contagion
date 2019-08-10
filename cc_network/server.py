@@ -69,4 +69,3 @@ model_params = {
 
 server = ModularServer(
     PopuNetwork, [network, MyTextElement()], 'Carceral Contagion', model_params)
-server.port = 8521
