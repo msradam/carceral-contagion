@@ -58,7 +58,7 @@ class MyTextElement(TextElement):
 
 
 model_params = {
-    'num_nodes': UserSettableParameter('slider', 'Number of individuals', 100, 50, 300, 1,
+    'num_nodes': UserSettableParameter('slider', 'Number of individuals', 100, 50, 800, 1,
                                        description='Choose the number of individuals in the population'),
     'avg_node_degree': UserSettableParameter('slider', 'Relationships per individual', 3, 3, 8, 1,
                                              description='Choose how many close relationships each individual has.'),

@@ -13,6 +13,12 @@ from .utils import generate_sentence
 
 
 class State(Enum):
+    """ 
+    Enumerates three states for each agent
+    per the SIS model, where 'released' means
+    the agent's sentence is complete but they
+    are still susceptible 
+    """
     SUSCEPTIBLE = 0
     INCARCERATED = 1
     RELEASED = 2
@@ -36,10 +42,14 @@ def number_released(model):
 
 class PopuNetwork(Model):
     """
-    The population network
+    The population network which initializes:
+    - the number of agents
+    - the number of incarcerated agents at start
+    - the race of the simulated community
+    - the average number of relationships per individual
     """
 
-    def __init__(self, num_nodes=100, avg_node_degree=3, initial_outbreak_size=10, race="black"):
+    def __init__(self, num_nodes=1000, avg_node_degree=3, initial_outbreak_size=10, race="black"):
         self.num_nodes = num_nodes
         self.race = race
         self.months = 0
@@ -81,12 +91,20 @@ class PopuNetwork(Model):
 
 
 class Person(Agent):
+    """
+    The individual in the community, initialized with one of
+    two states (susceptible or incarcerated) as well as a randomized gender
+    """
+
     def __init__(self, unique_id, model, initial_state, sentence):
         super().__init__(unique_id, model)
         self.state = initial_state
         self.sex = random.choice(('m', 'f'))
         self.sentence = sentence
         self.time_spent = 0
+
+    def infect_prob(self, prob):
+        return bool(numpy.random.binomial(1, prob))
 
     def infect_neighbors(self):
         neighbors_nodes = self.model.grid.get_neighbors(
@@ -95,15 +113,15 @@ class Person(Agent):
                                  agent.state is State.SUSCEPTIBLE]
         for a in susceptible_neighbors:
             if self.sex == 'm':
-                if a.sex == 'm' and numpy.random.binomial(1, 0.0301729987453868) == 1:
+                if a.sex == 'm' and self.infect_prob(0.0301729987453868):
                     a.state = State.INCARCERATED
-                if a.sex == 'f' and numpy.random.binomial(1, 0.000436688659218365) == 1:
+                if a.sex == 'f' and self.infect_prob(0.000436688659218365):
                     a.state = State.INCARCERATED
 
             if self.sex == 'f':
-                if a.sex == 'm' and numpy.random.binomial(1, 0.0332053842229949) == 1:
+                if a.sex == 'm' and self.infect_prob(0.0332053842229949):
                     a.state = State.INCARCERATED
-                if a.sex == 'f' and numpy.random.binomial(1, 0.00801193753900653) == 1:
+                if a.sex == 'f' and self.infect_prob(0.00801193753900653):
                     a.state = State.INCARCERATED
 
     def check_state(self):
