@@ -1,5 +1,6 @@
 git+https://github.com/projectmesa/mesa
 networkx
 numpy
+matplotlib
 gunicorn==19.9.0
 tornado==4.5.1
