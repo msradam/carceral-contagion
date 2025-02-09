@@ -1,10 +1,8 @@
-# ⚖️ Carceral Contagion ![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)
+# ⚖️ Carceral Contagion
 Simulating the infectious properties of mass incarceration through a synthetic agent-based population network, inspired by Lum et al's "The contagious
 nature of imprisonment" [1].
 
 ![Screenshot](https://raw.githubusercontent.com/msradam/carceral-contagion/master/screenshot.png)
-
-The app is live at https://carceralcontagion.herokuapp.com/.
 
 ## Instructions
 Clone the repository, then run
